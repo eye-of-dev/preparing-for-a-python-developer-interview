@@ -23,6 +23,8 @@ def get_dict_from_lists(keys, values):
     for index, val in enumerate(keys):
         if (index + 1) <= len_values:
             spam[val] = values[index]
+        else:
+            spam[val] = None
 
     return spam
 
