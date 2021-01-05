@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=1)
+
+
 class ProductCategories(models.Model):
     """
         Product categories class
@@ -11,17 +16,23 @@ class ProductCategories(models.Model):
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
     updated_at = models.DateTimeField('Дата обновления', auto_now=True)
 
+    published = PublishedManager()
+
     class Meta:
-        verbose_name = "Категории"
+        verbose_name = "Категорию"
         verbose_name_plural = "Категории"
 
     def __str__(self):
         return self.title
 
+    @property
+    def list_products(self):
+        return Products.objects.filter(category=self.id).all()
+
 
 class Products(models.Model):
     """
-        Product categories class
+        Product class
     """
     category = models.ForeignKey(ProductCategories, verbose_name='Категория', on_delete=models.CASCADE)
     title = models.CharField('Название продукта', max_length=128, unique=True)

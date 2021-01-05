@@ -1,6 +1,6 @@
 from uuid import uuid1
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 
 
 class CommonClass:
@@ -25,6 +25,13 @@ class TemplateClass(CommonClass, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(TemplateClass, self).get_context_data(**kwargs)
         context['title'] = self.title
+        return context
+
+
+class DetailClass(CommonClass, DetailView):
+    def get_context_data(self, **kwargs):
+        context = super(DetailClass, self).get_context_data(**kwargs)
+        context['title'] = self.object.title
         return context
 
 
