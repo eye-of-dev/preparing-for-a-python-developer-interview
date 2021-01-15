@@ -1,8 +1,10 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.template.loader import render_to_string
 
 from products.models import Products
 
-from .models import Cart
+from .models import Cart, CartCommon
 
 from mainpage.views import TemplateClass
 
@@ -28,3 +30,24 @@ def add_action(request, pk):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+def update_action(request, pk, quantity):
+    if request.is_ajax():
+        product = get_object_or_404(Cart, pk=pk)
+        product.quantity = quantity
+        product.save()
+
+        cart = CartCommon(request.COOKIES.get('cart_uuid'))
+        result = render_to_string('includes/cart_data.html', {'cart': cart})
+
+        return JsonResponse({'result': result})
+
+
+def delete_action(request, pk):
+    if request.is_ajax():
+        product = get_object_or_404(Cart, pk=pk)
+        product.delete()
+
+        cart = CartCommon(request.COOKIES.get('cart_uuid'))
+        result = render_to_string('includes/cart_data.html', {'cart': cart})
+
+        return JsonResponse({'result': result})

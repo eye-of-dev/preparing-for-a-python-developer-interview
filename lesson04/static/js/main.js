@@ -29,4 +29,31 @@ $(document).ready(function () {
             zIndex: 2147483647 // Z-Index for the overlay
         });
     });
+
+    $('body').on('click', '.cart_quantity_down', function() {
+        var prev = $(this).prev();
+        var value = prev.val();
+
+        $.get('/cart/update/' + $(this).data('pk') + '/' + --value, function(data){
+             $('.cart_info').html(data.result)
+        }, 'json');
+    });
+
+    $('body').on('click', '.cart_quantity_up', function() {
+        var next = $(this).next();
+        var value = next.val();
+
+        $.get('/cart/update/' + $(this).data('pk') + '/' + ++value, function(data){
+             $('.cart_info').html(data.result)
+        }, 'json');
+    });
+
+    $('body').on('click', '.cart_quantity_delete', function(e) {
+        e.preventDefault();
+        $.get($(this).attr('href'), function(data){
+             $('.cart_info').html(data.result)
+        }, 'json');
+    });
+
+
 });
