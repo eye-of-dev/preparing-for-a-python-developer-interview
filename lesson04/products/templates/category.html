@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load products_tags %}
+{% block title %} {{ title|title }} - {{ block.super }} {% endblock %}
+{% block content %}
+
+<section id="advertisement">
+    <div class="container">
+        <img src="{% static 'images/shop/advertisement.jpg' %}" alt="" />
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="left-sidebar">
+                    {% show_sidebar_category_nav %}
+
+                    <div class="shipping text-center"><!--shipping-->
+                    <img src="{% static 'images/home/shipping.jpg' %}" alt="" />
+                    </div><!--/shipping-->
+
+                </div>
+            </div>
+
+            <div class="col-sm-9 padding-right">
+                <div class="features_items"><!--features_items-->
+                    <h2 class="title text-center">Features Items</h2>
+                    {% for product in category.list_products %}
+                    <div class="col-sm-4">
+                        <div class="product-image-wrapper">
+                            <div class="single-products">
+                                <div class="productinfo text-center">
+                                    <img src="{{ product.image.url }}" alt="{{ product.title }}" />
+                                    <h2>${{ product.price }}</h2>
+                                    <p>{{ product.title }}</p>
+                                    <a href="{% url 'cart:add' product.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                </div>
+                                <div class="product-overlay">
+                                    <div class="overlay-content">
+                                        <h2>${{ product.price }}</h2>
+                                        <p>{{ product.title }}</p>
+                                        <a href="{% url 'cart:add' product.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div><!--features_items-->
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
